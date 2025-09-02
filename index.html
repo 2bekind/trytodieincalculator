@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Try to die in Calculator</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="hacker-background">
+        <div class="code-scroll">
+            <div class="code-line">-- INIT CALCULATOR SYSTEM</div>
+            <div class="code-line">local sys = {}</div>
+            <div class="code-line">local numbers = {0,1,2,3,4,5,6,7,8,9}</div>
+            <div class="code-line">local operations = {"+","-","*","/","^"}</div>
+            <div class="code-line"></div>
+            <div class="code-line">print("[CALCULATOR] >> SYSTEM BOOTING...")</div>
+            <div class="code-line">print("[CALCULATOR] >> ACCESSING MEMORY SECTORS...")</div>
+            <div class="code-line">print("[CALCULATOR] >> SCANNING 00110011...OK")</div>
+            <div class="code-line">print("[CALCULATOR] >> LOADING MODULE: MATH_CORE.dll")</div>
+            <div class="code-line"></div>
+            <div class="code-line">for i = 1, 999 do</div>
+            <div class="code-line">    local a = math.random(1, 9999)</div>
+            <div class="code-line">    local b = math.random(1, 9999)</div>
+            <div class="code-line">    local op = operations[math.random(1, #operations)]</div>
+            <div class="code-line">    local result</div>
+            <div class="code-line">    pcall(function()</div>
+            <div class="code-line">        if op == "+" then result = a+b end</div>
+            <div class="code-line">        if op == "-" then result = a-b end</div>
+            <div class="code-line">        if op == "*" then result = a*b end</div>
+            <div class="code-line">        if op == "/" then result = a/b end</div>
+            <div class="code-line">        if op == "^" then result = a^2 end</div>
+            <div class="code-line">    end)</div>
+            <div class="code-line"></div>
+            <div class="code-line">    print(string.format("[CALC_TRACE] %d %s %d = %s", a, op, b, tostring(result)))</div>
+            <div class="code-line">end</div>
+            <div class="code-line"></div>
+            <div class="code-line">-- RANDOM ERRORS TO MAKE IT LOOK SCARY</div>
+            <div class="code-line">local errors = {</div>
+            <div class="code-line">    "[ERROR] Division by zero detected!",</div>
+            <div class="code-line">    "[ALERT] Buffer overflow in sector 0x0F3A",</div>
+            <div class="code-line">    "[WARNING] Result exceeds INT32 limit!",</div>
+            <div class="code-line">    "[CRITICAL] Unknown operation executed!",</div>
+            <div class="code-line">    "[MATH_CORE] Infinity reached... aborting!"</div>
+            <div class="code-line">}</div>
+            <div class="code-line"></div>
+            <div class="code-line">while true do</div>
+            <div class="code-line">    wait(0.05)</div>
+            <div class="code-line">    local msg = errors[math.random(1, #errors)]</div>
+            <div class="code-line">    print(msg)</div>
+            <div class="code-line">end</div>
+        </div>
+    </div>
+    
+    <div class="calculator-container">
+        <div class="calculator-title">try to die in calculator</div>
+        <div class="calculator">
+            <div class="display">
+                <div class="expression"></div>
+                <div class="result"></div>
+            </div>
+            <div class="buttons">
+                <button class="btn clear">C</button>
+                <button class="btn operator">÷</button>
+                <button class="btn operator">×</button>
+                <button class="btn backspace">⌫</button>
+                
+                <button class="btn number">7</button>
+                <button class="btn number">8</button>
+                <button class="btn number">9</button>
+                <button class="btn operator">-</button>
+                
+                <button class="btn number">4</button>
+                <button class="btn number">5</button>
+                <button class="btn number">6</button>
+                <button class="btn operator">+</button>
+                
+                <button class="btn number">1</button>
+                <button class="btn number">2</button>
+                <button class="btn number">3</button>
+                <button class="btn equals">=</button>
+                
+                <button class="btn number zero">0</button>
+                <button class="btn decimal">.</button>
+            </div>
+            
+            <button class="btn how-btn">how?</button>
+            <button class="btn meow-btn">meow</button>
+        </div>
+    </div>
+    
+    <div class="ending-overlay" id="endingOverlay">
+        <div class="ending-text" id="endingText"></div>
+    </div>
+    
+    <div class="final-overlay" id="finalOverlay">
+        <div class="final-text" id="finalText"></div>
+    </div>
+    
+    <div class="help-overlay" id="helpOverlay">
+        <div class="help-content">
+            <button class="close-btn" id="closeHelp">×</button>
+            <div class="help-text">just make the calculator angry.</div>
+        </div>
+    </div>
+    
+    <div class="video-overlay" id="videoOverlay">
+        <video id="burgerVideo" controls>
+            <source src="videos/Burger the Cat.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+    </div>
+    
+    <script src="main.js"></script>
+    <script src="help.js"></script>
+</body>
+</html>
