@@ -2,7 +2,10 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="format-detection" content="telephone=no">
     <title>Try to die in Calculator</title>
     <link rel="stylesheet" href="style.css">
 </head>
@@ -84,7 +87,7 @@
                 <button class="btn decimal">.</button>
             </div>
             
-            <button class="btn how-btn">how?</button>
+            <button class="btn how-btn">hint</button>
             <button class="btn meow-btn">meow</button>
         </div>
     </div>
@@ -99,8 +102,24 @@
     
     <div class="help-overlay" id="helpOverlay">
         <div class="help-content">
-            <button class="close-btn" id="closeHelp">×</button>
-            <div class="help-text">just make the calculator angry.</div>
+            <div class="help-text">are you sure you want to see the hint?</div>
+            <div class="hint-buttons">
+                <button class="btn hint-btn yes-btn">yes</button>
+                <button class="btn hint-btn no-btn">no</button>
+            </div>
+        </div>
+    </div>
+    
+    <div class="hint-overlay" id="hintOverlay">
+        <div class="hint-content">
+            <div class="hint-text">
+                if you need help here is the answer:<br><br>
+                1/5: try dividing 0 by the non-dividend<br>
+                2/5: try dividing 1 by something with 1 digit<br>
+                3/5: try making an answer from an empty number<br>
+                4/5: try poking around, maybe you'll understand<br>
+                5/5: sit down... think..
+            </div>
         </div>
     </div>
     
@@ -111,7 +130,16 @@
         </video>
     </div>
     
+    <!-- Секретная концовка -->
+    <div class="secret-overlay" id="secretOverlay">
+        <div class="secret-image-container">
+            <img src="images/secret.jpg" alt="Secret" class="secret-image" id="secretImage">
+            <div class="secret-text" id="secretText"></div>
+        </div>
+    </div>
+    
     <script src="main.js"></script>
     <script src="help.js"></script>
+    <script src="hint.js"></script>
 </body>
 </html>

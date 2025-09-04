@@ -13,6 +13,8 @@ class CalculatorGame {
         this.lastInputTime = Date.now();
         this.foundEndings = new Set();
         this.isGameOver = false;
+        this.backspaceCount = 0; // Счетчик нажатий на backspace
+        this.secretTriggered = false; // Флаг для секретной концовки
     }
     
     initializeElements() {
@@ -23,9 +25,15 @@ class CalculatorGame {
         this.finalOverlay = document.getElementById('finalOverlay');
         this.finalText = document.getElementById('finalText');
         
+        // Элементы для секретной концовки
+        this.secretOverlay = document.getElementById('secretOverlay');
+        this.secretImage = document.getElementById('secretImage');
+        this.secretText = document.getElementById('secretText');
+        
         // Звуки
         this.clickSound = new Audio('sounds/click.wav');
         this.winSound = new Audio('sounds/win.wav');
+        this.tellSound = new Audio('sounds/tell.wav');
     }
     
     initializeEventListeners() {
@@ -65,6 +73,11 @@ class CalculatorGame {
         this.winSound.play().catch(() => {});
     }
     
+    playTellSound() {
+        this.tellSound.currentTime = 0;
+        this.tellSound.play().catch(() => {});
+    }
+    
     handleNumber(num) {
         if (this.isGameOver) return;
         
@@ -73,6 +86,9 @@ class CalculatorGame {
         this.updateDisplay();
         this.checkEnding4();
         this.lastInputTime = Date.now();
+        
+        // Сбрасываем счетчик backspace при вводе числа
+        this.backspaceCount = 0;
     }
     
     handleOperator(op) {
@@ -83,6 +99,9 @@ class CalculatorGame {
         this.expression += symbol;
         this.updateDisplay();
         this.lastInputTime = Date.now();
+        
+        // Сбрасываем счетчик backspace при вводе оператора
+        this.backspaceCount = 0;
     }
     
     handleEquals() {
@@ -135,6 +154,9 @@ class CalculatorGame {
         this.result = '';
         this.updateDisplay();
         this.lastInputTime = Date.now();
+        
+        // Сбрасываем счетчик backspace при очистке
+        this.backspaceCount = 0;
     }
     
     handleBackspace() {
@@ -144,6 +166,14 @@ class CalculatorGame {
         this.expression = this.expression.slice(0, -1);
         this.updateDisplay();
         this.lastInputTime = Date.now();
+        
+        // Увеличиваем счетчик нажатий на backspace
+        this.backspaceCount++;
+        
+        // Проверяем секретную концовку (15 нажатий)
+        if (this.backspaceCount >= 15 && !this.secretTriggered) {
+            this.triggerSecretEnding();
+        }
     }
     
     handleDecimal() {
@@ -155,6 +185,9 @@ class CalculatorGame {
             this.updateDisplay();
         }
         this.lastInputTime = Date.now();
+        
+        // Сбрасываем счетчик backspace при вводе десятичной точки
+        this.backspaceCount = 0;
     }
     
     handleKeydown(e) {
@@ -208,7 +241,9 @@ class CalculatorGame {
     async triggerEnding(endingNumber, message) {
         if (this.foundEndings.has(endingNumber)) {
             // Показываем сообщение на калькуляторе
-            this.showAlreadyCompletedMessage();
+            this.expression = 'Already completed!';
+            this.result = '';
+            this.updateDisplay();
             return;
         }
         
@@ -218,6 +253,9 @@ class CalculatorGame {
         // Показываем концовку
         this.endingText.textContent = '';
         this.endingOverlay.style.display = 'flex';
+        
+        // Звук Undertale при появлении текста
+        this.playTellSound();
         
         // Эффект печатной машинки
         await this.typewriterEffect(this.endingText, message);
@@ -250,6 +288,7 @@ class CalculatorGame {
         
         // Пишем "now."
         this.finalText.textContent = '';
+        this.playTellSound(); // Звук Undertale
         await this.typewriterEffect(this.finalText, "now.");
         
         // Ждем 3 секунды
@@ -257,13 +296,82 @@ class CalculatorGame {
         
         // Пишем "leave please."
         this.finalText.textContent = '';
+        this.playTellSound(); // Звук Undertale
         await this.typewriterEffect(this.finalText, "leave please.");
+    }
+    
+    async triggerSecretEnding() {
+        if (this.secretTriggered) return;
+        
+        this.secretTriggered = true;
+        this.isGameOver = true;
+        
+        // Скрываем все кнопки калькулятора
+        const calculator = document.querySelector('.calculator');
+        calculator.style.display = 'none';
+        
+        // Скрываем заголовок
+        const title = document.querySelector('.calculator-title');
+        title.style.display = 'none';
+        
+        // Скрываем фон с кодом
+        const hackerBackground = document.querySelector('.hacker-background');
+        hackerBackground.style.display = 'none';
+        
+        // Показываем секретный экран
+        this.secretOverlay.style.display = 'flex';
+        
+        // Ждем 2 секунды
+        await this.wait(2000);
+        
+        // Появляется текст "are u sure you want to delete me?" зеленым цветом
+        this.secretText.textContent = '';
+        this.secretText.style.color = '#00ff00';
+        this.playTellSound(); // Звук Undertale
+        await this.typewriterEffect(this.secretText, "are u sure you want to delete me?");
+        
+        // Ждем 3 секунды
+        await this.wait(3000);
+        
+        // Пишем "now."
+        this.secretText.textContent = '';
+        this.playTellSound(); // Звук Undertale
+        await this.typewriterEffect(this.secretText, "now.");
+        
+        // Ждем 2 секунды
+        await this.wait(2000);
+        
+        // Пишем "i delete u."
+        this.secretText.textContent = '';
+        this.playTellSound(); // Звук Undertale
+        await this.typewriterEffect(this.secretText, "i delete u.");
+        
+        // Ждем 2 секунды
+        await this.wait(2000);
+        
+        // Просто скрываем текст, картинка остается на месте
+        const text = this.secretText;
+        text.style.opacity = '0';
+        text.style.transition = 'opacity 0.5s ease';
+        
+        // Ждем пока текст исчезнет
+        await this.wait(500);
+        
+        // Оставляем черный экран с картинкой навсегда
+        // Чтобы убрать его, нужно перезагрузить страницу
+        // Ничего не скрываем и не показываем обратно калькулятор
     }
     
     async typewriterEffect(element, text) {
         element.textContent = '';
         for (let i = 0; i < text.length; i++) {
             element.textContent += text[i];
+            
+            // Проигрываем звук "tell" при каждом пробеле (новом слове)
+            if (text[i] === ' ') {
+                this.playTellSound();
+            }
+            
             await this.wait(100); // 100ms между символами
         }
     }

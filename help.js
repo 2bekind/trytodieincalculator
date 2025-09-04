@@ -1,10 +1,6 @@
 // Скрипт для функциональности помощи калькулятора, видео и хакерского фона
 document.addEventListener('DOMContentLoaded', () => {
     // Получаем элементы
-    const howBtn = document.querySelector('.how-btn');
-    const helpOverlay = document.getElementById('helpOverlay');
-    const closeHelpBtn = document.getElementById('closeHelp');
-    
     const meowBtn = document.querySelector('.meow-btn');
     const videoOverlay = document.getElementById('videoOverlay');
     const burgerVideo = document.getElementById('burgerVideo');
@@ -16,18 +12,6 @@ document.addEventListener('DOMContentLoaded', () => {
     function playClickSound() {
         clickSound.currentTime = 0;
         clickSound.play().catch(() => {});
-    }
-    
-    // Показать меню помощи
-    function showHelp() {
-        playClickSound();
-        helpOverlay.style.display = 'flex';
-    }
-    
-    // Скрыть меню помощи
-    function hideHelp() {
-        playClickSound();
-        helpOverlay.style.display = 'none';
     }
     
     // Показать видео
@@ -107,25 +91,8 @@ document.addEventListener('DOMContentLoaded', () => {
     setInterval(updateHackerBackground, 200);
     
     // Добавляем обработчики событий
-    if (howBtn) {
-        howBtn.addEventListener('click', showHelp);
-    }
-    
-    if (closeHelpBtn) {
-        closeHelpBtn.addEventListener('click', hideHelp);
-    }
-    
     if (meowBtn) {
         meowBtn.addEventListener('click', showVideo);
-    }
-    
-    // Закрытие по клику вне меню
-    if (helpOverlay) {
-        helpOverlay.addEventListener('click', (e) => {
-            if (e.target === helpOverlay) {
-                hideHelp();
-            }
-        });
     }
     
     // Закрытие видео по клику вне видео
@@ -145,9 +112,6 @@ document.addEventListener('DOMContentLoaded', () => {
     // Закрытие по клавише Escape
     document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape') {
-            if (helpOverlay.style.display === 'flex') {
-                hideHelp();
-            }
             if (videoOverlay.style.display === 'flex') {
                 hideVideo();
             }
